@@ -64,128 +64,9 @@ NODE* createNODE(char* m, char* c1, char* c2, char* c3, char* c4, NODE* previous
     return newNode;
 }
 
-void displayChoice(char* str, bool selected)
+void nodes_init(NODE* start)
 {
-    addch(' ');
-    addch(' ');
-    addch(' ');
-    addch(' ');
-    int len = strlen(str);
-    if (selected)
-    {
-        for (int i = 0; i < len; i++)
-            addch(str[i] | A_REVERSE);
-    }
-    else
-    {
-        for (int i = 0; i < len; i++)
-            addch(str[i]);
-    }
-}
-
-void displayNODE(NODE* n, int choice)
-{
-    clear();
-    move(4, 8);
-    int len = strlen(n->message);
-    for (int i = 0; i < len; i++)
-        addch(n->message[i]);
-    move(6, 4);
-    if (n->choice1m != NULL)
-        displayChoice(n->choice1m, choice == 0);
-    if (n->choice2m != NULL)
-        displayChoice(n->choice2m, choice == 1);
-    if (n->choice3m != NULL)
-        displayChoice(n->choice3m, choice == 2);
-    if (n->choice4m != NULL)
-        displayChoice(n->choice4m, choice == 3);
-    move(0, 0);
-    refresh();
-}
-
-int choiceLoop(NODE* n)
-{
-    int choice = 0;
-    int choice_max = 0;
-    if (n->choice1m != NULL)
-        choice_max = 1;
-    if (n->choice2m != NULL)
-        choice_max = 2;
-    if (n->choice3m != NULL)
-        choice_max = 3;
-    if (n->choice4m != NULL)
-        choice_max = 4;
-    int ch;
-    while (true)
-    {
-        displayNODE(n, choice);
-        ch = getch();
-        switch (ch)
-        {
-            case KEY_LEFT:
-                if (choice_max)
-                {
-                    choice--;
-                    choice = mod(choice, choice_max);
-                }
-                break;
-            case KEY_RIGHT:
-                if (choice_max)
-                {
-                    choice++;
-                    choice = mod(choice, choice_max);
-                }
-                break;
-            case KEY_DOWN:
-            case '\n':
-                if (choice_max)
-                    return choice;
-                break;
-            case KEY_UP:
-                return 4;
-            case 'q':
-                return 5;
-        }
-    }
-}
-
-NODE* getNextNode(NODE* n, int choice)
-{
-    switch (choice)
-    {
-        case 0:
-            return n->choice1;
-            break;
-        case 1:
-            return n->choice2;
-            break;
-        case 2:
-            return n->choice3;
-            break;
-        case 3:
-            return n->choice4;
-            break;
-    }
-}
-
-NODE* getPrevNode(NODE* n)
-{
-    if (n->prev != NULL)
-        return n->prev;
-    else
-        return n;
-}
-
-int main()
-{
-    initscr();
-    keypad(stdscr, TRUE);
-    cbreak();
-    noecho();
-    clear();
-
-    NODE* n1 = createNODE("Istanbul or Constantinople?", "Constantinople", "Neither", "Istanbul", NULL, NULL, -1);
-    {
+    NODE* n1 = createNODE("Istanbul or Constantinople?", "Constantinople", "Neither", "Istanbul", NULL, start, 0);
     NODE* n2 = createNODE("Do any of these exist? *Independent Canada *US Territory of Alaska *Tokyo", "No", "Yes", NULL, NULL, n1, 0);
     NODE* n3 = createNODE("The Holy Roman Empire?", "Yes", "No", NULL, NULL, n2, 0);
     NODE* a1 = createNODE("1805 or earlier (before this point, the modern idea of a complete policical map of the world gets hard to apply)", NULL, NULL, NULL, NULL, n3, 0);
@@ -343,9 +224,132 @@ int main()
     NODE* n75 = createNODE("Does the warning mention the spiders?", "No", "Yes", NULL, NULL, n74, 1);
     NODE* a77 = createNODE("2022", NULL, NULL, NULL, NULL, n75, 0);
     NODE* a78 = createNODE("2023 or later", NULL, NULL, NULL, NULL, n75, 1);
-    }
+}
 
-    NODE* node = n1;
+void displayChoice(char* str, bool selected)
+{
+    addch(' ');
+    addch(' ');
+    addch(' ');
+    addch(' ');
+    int len = strlen(str);
+    if (selected)
+    {
+        for (int i = 0; i < len; i++)
+            addch(str[i] | A_REVERSE);
+    }
+    else
+    {
+        for (int i = 0; i < len; i++)
+            addch(str[i]);
+    }
+}
+
+void displayNODE(NODE* n, int choice)
+{
+    clear();
+    move(4, 8);
+    int len = strlen(n->message);
+    for (int i = 0; i < len; i++)
+        addch(n->message[i]);
+    move(6, 4);
+    if (n->choice1m != NULL)
+        displayChoice(n->choice1m, choice == 0);
+    if (n->choice2m != NULL)
+        displayChoice(n->choice2m, choice == 1);
+    if (n->choice3m != NULL)
+        displayChoice(n->choice3m, choice == 2);
+    if (n->choice4m != NULL)
+        displayChoice(n->choice4m, choice == 3);
+    move(0, 0);
+    refresh();
+}
+
+int choiceLoop(NODE* n)
+{
+    int choice = 0;
+    int choice_max = 0;
+    if (n->choice1m != NULL)
+        choice_max = 1;
+    if (n->choice2m != NULL)
+        choice_max = 2;
+    if (n->choice3m != NULL)
+        choice_max = 3;
+    if (n->choice4m != NULL)
+        choice_max = 4;
+    int ch;
+    while (true)
+    {
+        displayNODE(n, choice);
+        ch = getch();
+        switch (ch)
+        {
+            case KEY_LEFT:
+                if (choice_max)
+                {
+                    choice--;
+                    choice = mod(choice, choice_max);
+                }
+                break;
+            case KEY_RIGHT:
+                if (choice_max)
+                {
+                    choice++;
+                    choice = mod(choice, choice_max);
+                }
+                break;
+            case KEY_DOWN:
+            case '\n':
+                if (choice_max)
+                    return choice;
+                break;
+            case KEY_UP:
+                return 4;
+            case 'q':
+                return 5;
+        }
+    }
+}
+
+NODE* getNextNode(NODE* n, int choice)
+{
+    switch (choice)
+    {
+        case 0:
+            return n->choice1;
+            break;
+        case 1:
+            return n->choice2;
+            break;
+        case 2:
+            return n->choice3;
+            break;
+        case 3:
+            return n->choice4;
+            break;
+    }
+}
+
+NODE* getPrevNode(NODE* n)
+{
+    if (n->prev != NULL)
+        return n->prev;
+    else
+        return n;
+}
+
+int main()
+{
+    initscr();
+    keypad(stdscr, TRUE);
+    cbreak();
+    noecho();
+    clear();
+
+    NODE* start = createNODE("Guide to Figuring Out the Age of an Undated World Map\n     (assuming it's complete, labeled in English, and detailed enough)", "Start", NULL, NULL, NULL, NULL, -1);
+    nodes_init(start);
+
+    NODE* node = start;
     while (true)
     {
         int choice = choiceLoop(node);
