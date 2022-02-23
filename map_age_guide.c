@@ -141,6 +141,33 @@ int choiceLoop(NODE* n)
     }
 }
 
+NODE* getNextNode(NODE* n, int choice)
+{
+    switch (choice)
+    {
+        case 0:
+            return n->choice1;
+            break;
+        case 1:
+            return n->choice2;
+            break;
+        case 2:
+            return n->choice3;
+            break;
+        case 3:
+            return n->choice4;
+            break;
+    }
+}
+
+NODE* getPrevNode(NODE* n)
+{
+    if (n->prev != NULL)
+        return n->prev;
+    else
+        return n;
+}
+
 int main()
 {
     initscr();
@@ -150,12 +177,24 @@ int main()
     clear();
 
     NODE* n1 = createNODE("Istanbul or Constantinople?", "Constantinople", "Neither", "Istanbul", NULL, NULL, -1);
-    NODE* n2 = createNODE("Do any of these exist? *Independent Canada *US Territory of Alaska *Tokyo", "No", "Yes", NULL, NULL, n1, 1);
-    NODE* n3 = createNODE("The Holy Roman Empire?", "Yes", "No", NULL, NULL, n2, 1);
-    choiceLoop(n1);
-    choiceLoop(n2);
-    choiceLoop(n3);
+    {
+    NODE* n2 = createNODE("Do any of these exist? *Independent Canada *US Territory of Alaska *Tokyo", "No", "Yes", NULL, NULL, n1, 0);
+    NODE* n3 = createNODE("The Holy Roman Empire?", "Yes", "No", NULL, NULL, n2, 0);
+    }
 
+    NODE* node = n1;
+    while (true)
+    {
+        int choice = choiceLoop(node);
+        if (choice == 4)
+            node = getPrevNode(node);
+        else if (choice == 5)
+            break;
+        else
+            node = getNextNode(node, choice);
+    }
+
+    clear();
     endwin();
     return 0;
 }
