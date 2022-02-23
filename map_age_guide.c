@@ -67,7 +67,7 @@ NODE* createNODE(char* m, char* c1, char* c2, char* c3, char* c4, NODE* previous
 void nodes_init(NODE* start)
 {
     NODE* n1 = createNODE("Istanbul or Constantinople?", "Constantinople", "Neither", "Istanbul", NULL, start, 0);
-    NODE* n2 = createNODE("Do any of these exist? *Independent Canada *US Territory of Alaska *Tokyo", "No", "Yes", NULL, NULL, n1, 0);
+    NODE* n2 = createNODE("Do any of these exist?\n        * Independent Canada\n        * US Territory of Alaska\n        * Tokyo", "No", "Yes", NULL, NULL, n1, 0);
     NODE* n3 = createNODE("The Holy Roman Empire?", "Yes", "No", NULL, NULL, n2, 0);
     NODE* a1 = createNODE("1805 or earlier (before this point, the modern idea of a complete policical map of the world gets hard to apply)", NULL, NULL, NULL, NULL, n3, 0);
     NODE* n4 = createNODE("The United States?", "No", "Yes", NULL, NULL, n3, 1);
@@ -248,11 +248,16 @@ void displayChoice(char* str, bool selected)
 void displayNODE(NODE* n, int choice)
 {
     clear();
-    move(4, 8);
+    int y = 4;
+    move(y, 8);
     int len = strlen(n->message);
     for (int i = 0; i < len; i++)
+    {
         addch(n->message[i]);
-    move(6, 4);
+        if (n->message[i] == '\n')
+            y++;
+    }
+    move(y + 2, 4);
     if (n->choice1m != NULL)
         displayChoice(n->choice1m, choice == 0);
     if (n->choice2m != NULL)
@@ -346,7 +351,7 @@ int main()
     noecho();
     clear();
 
-    NODE* start = createNODE("Guide to Figuring Out the Age of an Undated World Map\n     (assuming it's complete, labeled in English, and detailed enough)", "Start", NULL, NULL, NULL, NULL, -1);
+    NODE* start = createNODE("Guide to Figuring Out the Age of an Undated World Map\n   (assuming it's complete, labeled in English, and detailed enough)", "Start", NULL, NULL, NULL, NULL, -1);
     nodes_init(start);
 
     NODE* node = start;
