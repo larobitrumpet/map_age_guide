@@ -1,6 +1,11 @@
 #include <curses.h>
 #include <string.h>
 
+int mod(int a, int b)
+{
+    return a < 0 ? a % b + b : a % b;
+}
+
 typedef struct NODE
 {
     char* message;
@@ -14,9 +19,6 @@ typedef struct NODE
     struct NODE* choice4;
     struct NODE* prev;
 } NODE;
-
-int choice;
-int choice_max;
 
 void displayChoice(char* str, bool selected)
 {
@@ -37,7 +39,7 @@ void displayChoice(char* str, bool selected)
     }
 }
 
-void displayNODE(NODE* n)
+void displayNODE(NODE* n, int choice)
 {
     clear();
     move(4, 8);
@@ -45,21 +47,22 @@ void displayNODE(NODE* n)
     for (int i = 0; i < len; i++)
         addch(n->message[i]);
     move(6, 4);
-    choice_max = 0;
     if (n->choice1m != NULL)
-        displayChoice(n->choice1m, choice == 1);
+        displayChoice(n->choice1m, choice == 0);
     if (n->choice2m != NULL)
-        displayChoice(n->choice2m, choice == 2);
+        displayChoice(n->choice2m, choice == 1);
     if (n->choice3m != NULL)
-        displayChoice(n->choice3m, choice == 3);
+        displayChoice(n->choice3m, choice == 2);
     if (n->choice4m != NULL)
-        displayChoice(n->choice4m, choice == 4);
+        displayChoice(n->choice4m, choice == 3);
+    move(0, 0);
     refresh();
 }
 
 int choiceLoop(NODE* n)
 {
-    choice_max = 0;
+    int choice = 0;
+    int choice_max = 0;
     if (n->choice1m != NULL)
         choice_max = 1;
     if (n->choice2m != NULL)
@@ -68,15 +71,30 @@ int choiceLoop(NODE* n)
         choice_max = 3;
     if (n->choice4m != NULL)
         choice_max = 4;
-    choice = 1;
-    displayNODE(n);
     int ch;
-    //while (true)
-    //{
-    //    ch = getch();
-    //}
-    getch();
-    return 0;
+    while (true)
+    {
+        displayNODE(n, choice);
+        ch = getch();
+        switch (ch)
+        {
+            case KEY_LEFT:
+                choice--;
+                choice = mod(choice, choice_max);
+                break;
+            case KEY_RIGHT:
+                choice++;
+                choice = mod(choice, choice_max);
+                break;
+            case KEY_DOWN:
+            case '\n':
+                return choice;
+            case KEY_UP:
+                return 4;
+            case 'q':
+                return 5;
+        }
+    }
 }
 
 int main()
