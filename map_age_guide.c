@@ -123,16 +123,23 @@ int choiceLoop(NODE* n)
         switch (ch)
         {
             case KEY_LEFT:
-                choice--;
-                choice = mod(choice, choice_max);
+                if (choice_max)
+                {
+                    choice--;
+                    choice = mod(choice, choice_max);
+                }
                 break;
             case KEY_RIGHT:
-                choice++;
-                choice = mod(choice, choice_max);
+                if (choice_max)
+                {
+                    choice++;
+                    choice = mod(choice, choice_max);
+                }
                 break;
             case KEY_DOWN:
             case '\n':
-                return choice;
+                if (choice_max)
+                    return choice;
             case KEY_UP:
                 return 4;
             case 'q':
