@@ -15,42 +15,72 @@ typedef struct NODE
     struct NODE* prev;
 } NODE;
 
+int c1x;
+int c2x;
+int c3x;
+int c4x;
+int choice;
+int choice_max;
+
 void displayNODE(NODE* n)
 {
     clear();
-    move(1, 1);
+    move(4, 8);
     int len = strlen(n->message);
     for (int i = 0; i < len; i++)
         addch(n->message[i]);
-    move(3, 1);
+    int x, y;
+    y = 6;
+    x = 8;
+    move(y, x);
+    choice_max = 0;
     if (n->choice1m != NULL)
     {
+        choice_max = 1;
+        c1x = x;
         int len = strlen(n->choice1m);
         for (int i = 0; i < len; i++)
+        {
             addch(n->choice1m[i]);
+            x++;
+        }
     }
     if (n->choice2m != NULL)
     {
+        choice_max = 2;
+        c2x = x;
         addch(' ');
         addch(' ');
         addch(' ');
         addch(' ');
+        x += 4;
         int len = strlen(n->choice2m);
         for (int i = 0; i < len; i++)
+        {
             addch(n->choice2m[i]);
+            x++;
+        }
     }
     if (n->choice3m != NULL)
     {
+        choice_max = 3;
+        c3x = x;
         addch(' ');
         addch(' ');
         addch(' ');
         addch(' ');
+        x += 4;
         int len = strlen(n->choice3m);
         for (int i = 0; i < len; i++)
+        {
             addch(n->choice3m[i]);
+            x++;
+        }
     }
     if (n->choice4m != NULL)
     {
+        choice_max = 4;
+        c4x = x;
         addch(' ');
         addch(' ');
         addch(' ');
@@ -59,6 +89,7 @@ void displayNODE(NODE* n)
         for (int i = 0; i < len; i++)
             addch(n->choice4m[i]);
     }
+    choice = 1;
     refresh();
     getchar();
 }
