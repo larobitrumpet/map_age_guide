@@ -16,5 +16,11 @@ struct NODE
 
 int main()
 {
+    initscr();
+    clear();
+    cbreak();
+    noecho();
+
+    endwin();
     return 0;
 }
