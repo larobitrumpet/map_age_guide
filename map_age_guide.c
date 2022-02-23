@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <curses.h>
 #include <string.h>
 
@@ -19,6 +20,49 @@ typedef struct NODE
     struct NODE* choice4;
     struct NODE* prev;
 } NODE;
+
+NODE* createNODE(char* m, char* c1, char* c2, char* c3, char* c4, NODE* previous, int prev_choice)
+{
+    NODE* newNode = (NODE*)malloc(sizeof(NODE));
+    newNode->message = strdup(m);
+    if (c1 != NULL)
+        newNode->choice1m = strdup(c1);
+    else
+        newNode->choice1m = NULL;
+    if (c2 != NULL)
+        newNode->choice2m = strdup(c2);
+    else
+        newNode->choice2m = NULL;
+    if (c3 != NULL)
+        newNode->choice3m = strdup(c3);
+    else
+        newNode->choice3m = NULL;
+    if (c4 != NULL)
+        newNode->choice4m = strdup(c4);
+    else
+        newNode->choice4m = NULL;
+    newNode->prev = previous;
+    newNode->choice1 = NULL;
+    newNode->choice2 = NULL;
+    newNode->choice3 = NULL;
+    newNode->choice4 = NULL;
+    switch (prev_choice)
+    {
+        case 0:
+            previous->choice1 = newNode;
+            break;
+        case 1:
+            previous->choice2 = newNode;
+            break;
+        case 2:
+            previous->choice3 = newNode;
+            break;
+        case 3:
+            previous->choice4 = newNode;
+            break;
+    }
+    return newNode;
+}
 
 void displayChoice(char* str, bool selected)
 {
@@ -105,13 +149,12 @@ int main()
     noecho();
     clear();
 
-    NODE node;
-    node.message = "Istanbul or Constantinople?";
-    node.choice1m = "Constantinople";
-    node.choice2m = "Neither";
-    node.choice3m = "Istanbul";
-    node.choice4m = NULL;
-    choiceLoop(&node);
+    NODE* n1 = createNODE("Istanbul or Constantinople?", "Constantinople", "Neither", "Istanbul", NULL, NULL, -1);
+    NODE* n2 = createNODE("Do any of these exist? *Independent Canada *US Territory of Alaska *Tokyo", "No", "Yes", NULL, NULL, n1, 1);
+    NODE* n3 = createNODE("The Holy Roman Empire?", "Yes", "No", NULL, NULL, n2, 1);
+    choiceLoop(n1);
+    choiceLoop(n2);
+    choiceLoop(n3);
 
     endwin();
     return 0;
