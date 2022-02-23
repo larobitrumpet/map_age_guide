@@ -15,12 +15,27 @@ typedef struct NODE
     struct NODE* prev;
 } NODE;
 
-int c1x;
-int c2x;
-int c3x;
-int c4x;
 int choice;
 int choice_max;
+
+void displayChoice(char* str, bool selected)
+{
+    addch(' ');
+    addch(' ');
+    addch(' ');
+    addch(' ');
+    int len = strlen(str);
+    if (selected)
+    {
+        for (int i = 0; i < len; i++)
+            addch(str[i] | A_REVERSE);
+    }
+    else
+    {
+        for (int i = 0; i < len; i++)
+            addch(str[i]);
+    }
+}
 
 void displayNODE(NODE* n)
 {
@@ -29,77 +44,48 @@ void displayNODE(NODE* n)
     int len = strlen(n->message);
     for (int i = 0; i < len; i++)
         addch(n->message[i]);
-    int x, y;
-    y = 6;
-    x = 8;
-    move(y, x);
+    move(6, 4);
     choice_max = 0;
     if (n->choice1m != NULL)
-    {
-        choice_max = 1;
-        c1x = x;
-        int len = strlen(n->choice1m);
-        for (int i = 0; i < len; i++)
-        {
-            addch(n->choice1m[i]);
-            x++;
-        }
-    }
+        displayChoice(n->choice1m, choice == 1);
     if (n->choice2m != NULL)
-    {
-        choice_max = 2;
-        c2x = x;
-        addch(' ');
-        addch(' ');
-        addch(' ');
-        addch(' ');
-        x += 4;
-        int len = strlen(n->choice2m);
-        for (int i = 0; i < len; i++)
-        {
-            addch(n->choice2m[i]);
-            x++;
-        }
-    }
+        displayChoice(n->choice2m, choice == 2);
     if (n->choice3m != NULL)
-    {
-        choice_max = 3;
-        c3x = x;
-        addch(' ');
-        addch(' ');
-        addch(' ');
-        addch(' ');
-        x += 4;
-        int len = strlen(n->choice3m);
-        for (int i = 0; i < len; i++)
-        {
-            addch(n->choice3m[i]);
-            x++;
-        }
-    }
+        displayChoice(n->choice3m, choice == 3);
     if (n->choice4m != NULL)
-    {
-        choice_max = 4;
-        c4x = x;
-        addch(' ');
-        addch(' ');
-        addch(' ');
-        addch(' ');
-        int len = strlen(n->choice4m);
-        for (int i = 0; i < len; i++)
-            addch(n->choice4m[i]);
-    }
-    choice = 1;
+        displayChoice(n->choice4m, choice == 4);
     refresh();
-    getchar();
+}
+
+int choiceLoop(NODE* n)
+{
+    choice_max = 0;
+    if (n->choice1m != NULL)
+        choice_max = 1;
+    if (n->choice2m != NULL)
+        choice_max = 2;
+    if (n->choice3m != NULL)
+        choice_max = 3;
+    if (n->choice4m != NULL)
+        choice_max = 4;
+    choice = 1;
+    displayNODE(n);
+    int ch;
+    //while (true)
+    //{
+    //    ch = getch();
+    //}
+    getch();
+    return 0;
 }
 
 int main()
 {
     initscr();
-    clear();
+    keypad(stdscr, TRUE);
     cbreak();
     noecho();
+    clear();
 
     NODE node;
     node.message = "Istanbul or Constantinople?";
@@ -107,7 +93,7 @@ int main()
     node.choice2m = "Neither";
     node.choice3m = "Istanbul";
     node.choice4m = NULL;
-    displayNODE(&node);
+    choiceLoop(&node);
 
     endwin();
     return 0;
