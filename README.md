@@ -11,7 +11,7 @@ To build, all you need to do is have gcc and make installed and run `make`. To r
 
 ## Usage
 
-You will be asked a series of questions about the map. One answer will be highlighted. Press the left and right arrow keys to highlight a different answer. Once your answer is highlighted, press enter or the down arrow key to choose that answer. Press the up arrow to go back to the previous question. Press 'q' at anytime to quit.
+You will be asked a series of questions about your map. One answer will be highlighted. Press the left and right arrow keys to highlight a different answer. Once your answer is highlighted, press enter or the down arrow key to choose that answer. Press the up arrow to go back to the previous question. Press 'q' at anytime to quit. At the end, you should have the date range of when the map was made.
 
 
 ## Previous Question Caveat
