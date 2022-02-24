@@ -17,3 +17,7 @@ You will be asked a series of questions. One answer will be highlighted. Press t
 ## Previous Question Caveat
 
 For some of the questions, there are multiple ways of getting there, but every question only "knows" about one of the ways to get there. Because of this, pressing up won't always go to the previous question you answered. For example, if you are on the question "Zaire? or: "Hong Kong (UK)"", and you press up, you will go to the question "Does the Soviet Union exist?", even if you got there from "North Korea?". This could be fixed by creating a stack, pushing questions to the stack as they are answered, and pop from the stack whenever we want to go back. However, by the time I found this problem I was well into the way I was already doing it and didn't want to change what I was doing.
+
+## License
+
+This program is licensed under an MIT license, which means you are free to use,copy, share,  To learn more, look at [LICENSE](LICENSE).
