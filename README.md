@@ -21,3 +21,11 @@ For some of the questions, there are multiple ways of getting there, but every q
 ## License
 
 This program is licensed under an MIT license, which means you are free to use,copy, share,  To learn more, look at [LICENSE](LICENSE).
+
+## Screenshots
+![Title: "Guide to Figuring Out the Age of an Undated World Map (assuming it's complete, labeled in English, and detailed enough)", with one option: "Start"](screenshot1.png)
+![Question: "Istanbul or Constantinople?", with the options "Constantinople", "Neither",  and"Istanbul". "Constantinople" is highlighted](screenshot2.png)
+![Question: "Texas is...", with options "part of mexico", "independent", and "part of the US". "independent" is highlighted](screenshot3.png)
+![Question: "Saint Trimble's Island", with options "No" and "Yes. "Yes" is highlighted](screenshot4.png)
+![Question: "Rivers "Sirion" or "Anduin"?", with options "Yes" and "No". "No" is highlighted](screenshot5.png)
+![Question: "Are you SURE this is a map?", with options "Yes" and "No". "No" is highlighted](screenshot6.png)
